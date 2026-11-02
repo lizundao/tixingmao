@@ -2,6 +2,14 @@
 
 一个独立的 Windows / macOS 桌面提醒工具。平时驻留系统托盘，到点后从屏幕指定位置出现一只会动的小猫和提醒文字；鼠标移入会暂停动画并显示关闭按钮。
 
+## 下载
+
+在 [Releases](https://github.com/lizundao/tixingmao/releases) 页面下载：
+
+- **Windows 安装版**：`*-setup.exe`（NSIS 安装程序）
+- **Windows 绿色版**：`tixingmao.exe`（单文件，解压即用，无需安装）
+- **macOS**：`*.dmg`（未签名，首次打开请右键 →「打开」）
+
 ## 已实现
 
 - 一次性、每天、固定间隔提醒
