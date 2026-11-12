@@ -3,7 +3,7 @@
 # exe 已把前端资源全部内嵌，解压即用，不写注册表、不联网。
 $ErrorActionPreference = 'Stop'
 
-$version = '1.0.0'
+$version = '1.0.1'
 $root = Split-Path -Parent $PSScriptRoot
 $exeSrc = Join-Path $root 'src-tauri/target/release/tixingmao.exe'
 $releaseDir = Join-Path $root 'release'

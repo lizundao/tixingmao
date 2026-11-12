@@ -2,14 +2,14 @@ name: 打包与发布（Windows / macOS）
 
 # 触发方式：
 #   1) push / PR 到 main：只跑前端类型检查与构建，不打包
-#   2) 打 tag：git tag v1.0.0 && git push origin v1.0.0 → 构建并创建草稿 Release
+#   2) 打 tag：git tag v1.0.1 && git push origin v1.0.1 → 构建并创建草稿 Release
 #   3) 手动：Actions 页 → Run workflow（重新打包验证）
 #
 # 产物统一 ASCII 命名，四件套：
-#   Tixingmao-1.0.0-setup-win-x64.exe
-#   Tixingmao-1.0.0-portable-win-x64.zip
-#   Tixingmao-1.0.0-aarch64.dmg
-#   Tixingmao-1.0.0-aarch64.app.zip
+#   Tixingmao-1.0.1-setup-win-x64.exe
+#   Tixingmao-1.0.1-portable-win-x64.zip
+#   Tixingmao-1.0.1-aarch64.dmg
+#   Tixingmao-1.0.1-aarch64.app.zip
 
 on:
   workflow_dispatch:
@@ -77,15 +77,15 @@ jobs:
           $nsis = Get-ChildItem 'src-tauri/target/release/bundle/nsis/*-setup.exe' | Select-Object -First 1
           if (-not $nsis) { throw '未找到 NSIS 安装包' }
           New-Item -ItemType Directory -Force -Path 'release' | Out-Null
-          Copy-Item $nsis.FullName 'release/Tixingmao-1.0.0-setup-win-x64.exe' -Force
+          Copy-Item $nsis.FullName 'release/Tixingmao-1.0.1-setup-win-x64.exe' -Force
 
       - name: 上传 Windows 产物
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer-and-portable
           path: |
-            release/Tixingmao-1.0.0-setup-win-x64.exe
-            release/Tixingmao-1.0.0-portable-win-x64.zip
+            release/Tixingmao-1.0.1-setup-win-x64.exe
+            release/Tixingmao-1.0.1-portable-win-x64.zip
           if-no-files-found: error
           retention-days: 7
 
@@ -125,8 +125,8 @@ jobs:
           app=$(find src-tauri/target/aarch64-apple-darwin/release/bundle/macos -maxdepth 1 -name '*.app' | head -n 1)
           [ -n "$dmg" ] || { echo "未找到 dmg"; exit 1; }
           [ -n "$app" ] || { echo "未找到 app"; exit 1; }
-          cp "$dmg" release/Tixingmao-1.0.0-aarch64.dmg
-          ditto -c -k --keepParent "$app" release/Tixingmao-1.0.0-aarch64.app.zip
+          cp "$dmg" release/Tixingmao-1.0.1-aarch64.dmg
+          ditto -c -k --keepParent "$app" release/Tixingmao-1.0.1-aarch64.app.zip
           ls -lh release/
 
       - name: 上传 macOS 产物
@@ -134,8 +134,8 @@ jobs:
         with:
           name: macos-apple-silicon
           path: |
-            release/Tixingmao-1.0.0-aarch64.dmg
-            release/Tixingmao-1.0.0-aarch64.app.zip
+            release/Tixingmao-1.0.1-aarch64.dmg
+            release/Tixingmao-1.0.1-aarch64.app.zip
           if-no-files-found: error
           retention-days: 7
 

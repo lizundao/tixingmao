@@ -1,6 +1,6 @@
 [package]
 name = "tixingmao"
-version = "1.0.0"
+version = "1.0.1"
 description = "A quiet desktop reminder that sends a little cat at the right time"
 authors = ["lizundao"]
 edition = "2021"

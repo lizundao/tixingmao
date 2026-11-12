@@ -10,10 +10,10 @@
 
 | 平台 | 文件 | 说明 |
 | --- | --- | --- |
-| Windows 安装包 | `Tixingmao-1.0.0-setup-win-x64.exe` | 当前用户安装，无需管理员权限 |
-| Windows 便携版 | `Tixingmao-1.0.0-portable-win-x64.zip` | 解压即用，不写注册表、不联网 |
-| macOS (Apple 芯片) | `Tixingmao-1.0.0-aarch64.dmg` | 若 dmg 打不开可用下方 app.zip |
-| macOS (Apple 芯片) | `Tixingmao-1.0.0-aarch64.app.zip` | dmg 的替代分发形式 |
+| Windows 安装包 | `Tixingmao-1.0.1-setup-win-x64.exe` | 当前用户安装，无需管理员权限 |
+| Windows 便携版 | `Tixingmao-1.0.1-portable-win-x64.zip` | 解压即用，不写注册表、不联网 |
+| macOS (Apple 芯片) | `Tixingmao-1.0.1-aarch64.dmg` | 若 dmg 打不开可用下方 app.zip |
+| macOS (Apple 芯片) | `Tixingmao-1.0.1-aarch64.app.zip` | dmg 的替代分发形式 |
 
 未签名构建首次运行可能触发系统安全提示，详见各平台说明。
 
@@ -60,7 +60,7 @@ Windows 绿色版（免安装，一条命令编译 exe + 打包 zip）：
     npm run tauri:build:exe
     npm run release:portable
 
-产物在 `release/Tixingmao-1.0.0-portable-win-x64/`：提醒猫.exe + 使用说明.txt + 许可证。Tauri 会把 `dist/` 全部编进 exe，运行时不需要 `dist/`、`node_modules/`，也不写注册表、不联网；解压后整个目录拷到任意位置（U 盘也行）双击即可。唯一外部依赖是系统自带的 WebView2 Runtime（Win10/11 一般已预装）。
+产物在 `release/Tixingmao-1.0.1-portable-win-x64/`：提醒猫.exe + 使用说明.txt + 许可证。Tauri 会把 `dist/` 全部编进 exe，运行时不需要 `dist/`、`node_modules/`，也不写注册表、不联网；解压后整个目录拷到任意位置（U 盘也行）双击即可。唯一外部依赖是系统自带的 WebView2 Runtime（Win10/11 一般已预装）。
 
 macOS（生成 .app / .dmg，必须在 macOS + Xcode 环境执行）：
 
