@@ -728,6 +728,7 @@ pub fn run() {
     calendar::set_overrides(overrides);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .manage(AppState {
             reminders: Mutex::new(reminders),
             overlay: Mutex::new(OverlayState::default()),

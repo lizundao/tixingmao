@@ -3,6 +3,6 @@
   "identifier": "default",
   "description": "Default permissions for the main window and reminder overlay",
   "windows": ["main", "overlay"],
-  "permissions": ["core:default"]
+  "permissions": ["core:default", "opener:default"]
 }
 

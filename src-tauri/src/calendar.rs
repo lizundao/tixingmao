@@ -282,6 +282,31 @@ mod tests {
     }
 
     #[test]
+    fn year_2027_holiday_and_makeup_match_state_council() {
+        // 2027 年国务院放假安排（2026-11-05 公布）
+        assert!(!is_workday(date(2027, 1, 1)));   // 元旦
+        assert!(!is_workday(date(2027, 2, 5)));   // 春节除夕起
+        assert!(!is_workday(date(2027, 2, 13)));  // 春节正月初八
+        assert!(is_workday(date(2027, 1, 31)));   // 春节前调休上班（周日）
+        assert!(is_workday(date(2027, 2, 14)));   // 春节后调休上班（周日）
+        assert!(!is_workday(date(2027, 4, 5)));   // 清明周一
+        assert!(!is_workday(date(2027, 5, 5)));   // 劳动节周三
+        assert!(is_workday(date(2027, 5, 8)));    // 劳动节调休上班（周六）
+        assert!(!is_workday(date(2027, 6, 9)));   // 端午（周三，非周末也休）
+        assert!(!is_workday(date(2027, 9, 15)));  // 中秋（周三，非周末也休）
+        assert!(!is_workday(date(2027, 10, 7)));  // 国庆
+        assert!(is_workday(date(2027, 9, 26)));   // 国庆前调休上班（周日）
+        assert!(is_workday(date(2027, 10, 9)));   // 国庆后调休上班（周六）
+    }
+
+    #[test]
+    fn coverage_includes_2027() {
+        let years = coverage_years();
+        assert!(years.contains(&2024));
+        assert!(years.contains(&2027));
+    }
+
+    #[test]
     fn parse_date_lines_skips_blanks_and_reports_bad_lines() {
         let parsed = parse_date_lines(
             "2026-01-01\n\n 2026-01-01 \n2026-02-15\n",

@@ -3,7 +3,7 @@
 ## chinese-days
 
 The bundled Chinese statutory holiday and make-up workday data is generated from
-[chinese-days](https://github.com/vsme/chinese-days), version 1.5.9.
+[chinese-days](https://github.com/vsme/chinese-days), version 1.5.10.
 
 MIT License
 

@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const years = [2024, 2025, 2026];
+const years = [2024, 2025, 2026, 2027];
 const outputYears = {};
 
 function toNamedDates(value) {
@@ -24,9 +24,9 @@ for (const year of years) {
 
 const output = {
   source: "https://github.com/vsme/chinese-days",
-  packageVersion: "1.5.9",
+  packageVersion: "1.5.10",
   license: "MIT",
-  generatedAt: "2026-10-23",
+  generatedAt: "2026-11-12",
   years: outputYears
 };
 

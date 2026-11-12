@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+import { openExternalUrl } from "../openUrl";
 import type {
   CalendarImportResult,
   CalendarInfo,
@@ -26,6 +27,7 @@ const deletingId = ref<string | null>(null);
 const overlayPosition = ref<OverlayPosition>("bottomRight");
 const editorOpen = ref(false);
 const settingsOpen = ref(false);
+const aboutOpen = ref(false);
 const pendingDelete = ref<Reminder | null>(null);
 const formError = ref("");
 const titleInput = ref<HTMLInputElement | null>(null);
@@ -67,6 +69,7 @@ const modalOpen = computed(
   () =>
     editorOpen.value ||
     settingsOpen.value ||
+    aboutOpen.value ||
     importOpen.value ||
     pendingDelete.value !== null
 );
@@ -544,7 +547,11 @@ function onKeydown(event: KeyboardEvent) {
     closeEditor();
     return;
   }
-  if (settingsOpen.value) settingsOpen.value = false;
+  if (settingsOpen.value) {
+    settingsOpen.value = false;
+    return;
+  }
+  if (aboutOpen.value) aboutOpen.value = false;
 }
 
 function formatNext(reminder: Reminder) {
@@ -653,6 +660,7 @@ onUnmounted(() => {
         </div>
         <button type="button" class="ghost-button" @click="previewReminder(null)">预览猫咪</button>
         <button type="button" class="ghost-button" @click="settingsOpen = true">系统设置</button>
+        <button type="button" class="ghost-button about-link-btn" @click="aboutOpen = true">关于</button>
         <button type="button" class="primary-button compact" @click="openEditor()">
           <span aria-hidden="true">＋</span>
           新建提醒
@@ -918,7 +926,7 @@ onUnmounted(() => {
             </div>
           </div>
           <p class="settings-hint">
-            内置 2024–2026 年官方数据。新一年的安排公布后，可在这里补上休息日和调休上班日，只影响“仅法定工作日”的提醒。
+            内置 2024–2027 年官方数据（含 2027 年最新安排）。新一年的安排公布后，可在这里补上休息日和调休上班日，只影响“仅法定工作日”的提醒。
           </p>
 
           <div class="override-form">
@@ -970,9 +978,74 @@ onUnmounted(() => {
           <p v-else class="settings-hint">还没有自定义日期，默认使用内置节假日数据。</p>
         </div>
 
+        <div class="settings-section about-mini">
+          <div class="settings-section-heading">
+            <h3>关于与许可</h3>
+          </div>
+          <p class="settings-hint">
+            提醒猫 v1.0.0 · 依据 MIT 许可开放源码，数据只留在本机。
+          </p>
+          <button type="button" class="text-button import-link" @click="aboutOpen = true">查看完整说明与第三方声明 →</button>
+        </div>
+
         <div class="modal-actions">
           <button type="button" class="ghost-button" @click="previewReminder(null)">预览效果</button>
           <button type="button" class="primary-button compact" @click="settingsOpen = false">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="aboutOpen" class="modal-backdrop" @click.self="aboutOpen = false">
+      <div class="modal-card modal-about" role="dialog" aria-modal="true" aria-labelledby="about-title">
+        <div class="modal-header">
+          <div>
+            <h2 id="about-title">关于提醒猫</h2>
+            <p class="modal-subtitle">一只安静待在托盘、到点来提醒你的小猫。</p>
+          </div>
+          <button type="button" class="icon-button modal-close" aria-label="关闭" @click="aboutOpen = false">×</button>
+        </div>
+
+        <div class="about-free-banner">
+          <span class="about-free-icon" aria-hidden="true">✓</span>
+          <div>
+            <strong>离线运行，数据留在本地</strong>
+            <p>无需账号、无需联网，提醒与设置都保存在本机。由墨点 inkdot 提供。</p>
+          </div>
+        </div>
+
+        <div class="about-brand">
+          <img class="inkdot-mark" src="/inkdot.png" alt="墨点 inkdot 标志" width="48" height="48" />
+          <div>
+            <div class="about-brand-name">墨点 inkdot</div>
+            <div class="about-brand-tagline">小工具，一点就够用 · inkdot.cn</div>
+          </div>
+        </div>
+
+        <dl class="about-meta">
+          <div><dt>应用名称</dt><dd>提醒猫 <span class="about-badge">开源</span></dd></div>
+          <div><dt>版本</dt><dd>v1.0.0</dd></div>
+          <div><dt>品牌</dt><dd>墨点（inkdot）</dd></div>
+          <div><dt>作者</dt><dd>inkdot</dd></div>
+          <div>
+            <dt>网址</dt>
+            <dd><button type="button" class="about-ext-link" @click="openExternalUrl('https://inkdot.cn')">inkdot.cn ↗</button></dd>
+          </div>
+          <div>
+            <dt>源码</dt>
+            <dd><button type="button" class="about-ext-link" @click="openExternalUrl('https://github.com/lizundao/tixingmao')">github.com/lizundao/tixingmao ↗</button></dd>
+          </div>
+          <div><dt>许可</dt><dd>MIT 开源许可（LICENSE / LICENSE.zh-CN.md）</dd></div>
+        </dl>
+
+        <div class="about-body">
+          <p>平时安静待在托盘，到点让一只会动的小猫从屏幕角落来提醒你。支持一次性、每天、间隔提醒，可自动跳过周末与法定节假日并识别调休上班日。</p>
+
+          <h4>第三方声明</h4>
+          <p>内置的中国法定节假日与调休数据生成自 <strong>chinese-days 1.5.10</strong>（MIT 许可，Copyright © 2024 Yawei sun），来源 github.com/vsme/chinese-days。</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="primary-button compact" @click="aboutOpen = false">知道了</button>
         </div>
       </div>
     </div>
@@ -983,7 +1056,7 @@ onUnmounted(() => {
           <div>
             <h2 id="import-title">批量导入假期</h2>
             <p class="modal-subtitle">
-              粘贴国务院公布的放假和调休日期，一行一个，例如 2026-01-01。重复日期会自动合并，同一天以本次导入为准。
+              粘贴国务院公布的放假和调休日期，一行一个，例如 2027-01-01。重复日期会自动合并，同一天以本次导入为准。
             </p>
           </div>
           <button type="button" class="icon-button modal-close" aria-label="关闭" @click="closeImport">×</button>
@@ -996,7 +1069,7 @@ onUnmounted(() => {
               v-model="importHolidays"
               class="text-area import-area"
               spellcheck="false"
-              placeholder="2026-01-01&#10;2026-01-02&#10;2026-01-03"
+              placeholder="2027-01-01&#10;2027-01-02&#10;2027-01-03"
             ></textarea>
           </label>
           <label class="field">
@@ -1005,7 +1078,7 @@ onUnmounted(() => {
               v-model="importWorkdays"
               class="text-area import-area"
               spellcheck="false"
-              placeholder="2026-01-04&#10;2026-02-14"
+              placeholder="2027-01-31&#10;2027-02-14"
             ></textarea>
           </label>
         </div>

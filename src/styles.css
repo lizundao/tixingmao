@@ -15,10 +15,34 @@
   --gold: #e5b34f;
   --green: #5c8468;
   --shadow: 0 18px 55px rgba(78, 57, 39, 0.12);
+  --scroll-thumb: rgba(124, 110, 96, 0.32);
+  --scroll-thumb-hover: rgba(124, 110, 96, 0.55);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* 细滚动条：WebView2 默认滚动条又粗又亮，在深色弹窗里很突兀，收窄并融入主题 */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 html,
@@ -910,6 +934,172 @@ body.is-dragging-card .drag-handle {
   font-size: 11px;
 }
 
+.about-link-btn {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.about-mini {
+  gap: 6px;
+}
+
+.modal-about {
+  width: min(510px, 100%);
+}
+
+/* 弹窗底部操作条吸附固定，内容再长也能随时点到按钮 */
+.modal-card .modal-actions {
+  position: sticky;
+  bottom: -22px;
+  margin-bottom: -22px;
+  padding: 14px 0 20px;
+  background: linear-gradient(to bottom, rgba(255, 250, 244, 0), #fffaf4 26%);
+  z-index: 2;
+}
+
+.about-free-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 13px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(92, 132, 104, 0.22);
+  border-radius: 12px;
+  background: rgba(92, 132, 104, 0.09);
+}
+
+.about-free-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.about-free-banner strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.about-free-banner p {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted-strong);
+}
+
+.about-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.inkdot-mark {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: block;
+  padding: 7px;
+  border-radius: 14px;
+  background: #f4ede4;
+  object-fit: contain;
+}
+
+.about-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.about-brand-tagline {
+  margin-top: 3px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.about-meta {
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+.about-meta > div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+
+.about-meta dt {
+  width: 68px;
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+.about-meta dd {
+  margin: 0;
+  color: var(--muted-strong);
+  overflow-wrap: anywhere;
+}
+
+.about-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: #9d4e32;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.about-ext-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.about-ext-link:hover {
+  text-decoration: underline;
+}
+
+.about-body {
+  padding-top: 14px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted-strong);
+}
+
+.about-body p {
+  margin: 0 0 10px;
+}
+
+.about-body h4 {
+  margin: 14px 0 5px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.about-body strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .import-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1379,6 +1569,30 @@ body.overlay-body {
   .modal-card {
     border-color: rgba(255, 239, 222, 0.12);
     background: #302b27;
+  }
+
+  .modal-card .modal-actions {
+    background: linear-gradient(to bottom, rgba(48, 43, 39, 0), #302b27 26%);
+  }
+
+  .about-free-banner {
+    border-color: rgba(122, 170, 138, 0.28);
+    background: rgba(122, 170, 138, 0.1);
+  }
+
+  .about-free-banner strong {
+    color: #f2e8dc;
+  }
+
+  .about-badge {
+    color: #f0b992;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(240, 225, 208, 0.28);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(240, 225, 208, 0.5);
   }
 
   .repeat-tag {
